@@ -111,6 +111,14 @@ data:
             # Gunicorn docs suggest this value.
             keepalive_timeout 5;
 
+            # Security headers - IMPORTANT: nginx drops ALL server-level add_header
+            # directives from any location block that defines its own add_header.
+            # If you add add_header to a location block, you must duplicate these
+            # headers there as well.
+            add_header Strict-Transport-Security max-age=15768000;
+            add_header X-Frame-Options "DENY";
+            add_header X-Content-Type-Options nosniff;
+
             # static files that can change dynamically, or are needed for TLS
             # purposes are served through the webserver.
             root {{ galaxy_webserver_static_dir }};
